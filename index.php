@@ -6,6 +6,7 @@
 	<title>Repositorio</title>
 	<link rel="stylesheet" href="css/bulma.min.css">
 	<link rel="stylesheet" href="css/custom.css">
+	<script src="js/axios.min.js"></script>
 	<script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 </head>
 <body>
@@ -16,7 +17,7 @@
 			<hr>
 			<div class="columns">
 				<div class="column is-one-third">
-					<nav class="panel">
+					<nav id="PanelCarpetas" class="panel">
 						<p class="panel-heading">Carpetas</p>
 						<a class="panel-block is-active">
 							<span class="panel-icon"><i class="fa fa-folder"></i></span> No hay elementos que mostrar
@@ -24,7 +25,7 @@
 					</nav>
 				</div>
 				<div class="column is-two-third">
-				<nav class="panel">
+					<nav id="PanelArchivos" class="panel">
 						<p class="panel-heading">Archivos</p>
 						<a class="panel-block ">
 							<span class="panel-icon"><i class="fa fa-cube"></i></span> No hay elementos que mostrar
@@ -35,6 +36,61 @@
 			<hr>
 			</div>
 		</section>
+		<div id="modal" class="modal is-active">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+				<p class="modal-card-title">Repositorio</p>
+					<button class="delete" aria-label="close"></button>
+				</header>
+				<section class="modal-card-body">
+				<img src="image/load.gif" /> Cargando ...
+				</section>
+				<footer class="modal-card-foot">
+					
+				</footer>
+			</div>
+		</div>
 	</div><!--.container-->
+	<script>
+		const load_api = async (directorio) => {
+			return await new Promise((resolve, reject) => {
+				let divmodal = document.getElementById('modal');
+				divmodal.className = "modal is-active";
+				const config = {url: '/show.php', method: 'post', data: {dir: directorio }, baseURL: 'bin/', headers: {'Content-Type': 'application/json','X-Requested-With': 'XMLHttpRequest'}};
+				axios
+				.request(config)
+				.then(function(response) {
+					resolve(response.data);
+					divmodal.className = "modal";
+				})
+				.catch(function(error) {
+					reject(error);
+					divmodal.className = "modal";
+				})
+			});
+		}
+
+		const mostrar_archivos = async (carpeta = "", destino = "") => {
+			let Rebeca = await load_api(carpeta);
+			console.log(carpeta);
+			console.log(Rebeca);
+		}
+
+		const load_main = async (origen = "") => {
+			let Rebeca = await load_api(origen);
+			let listCarpetas = '<p class="panel-heading">Carpetas</p>';
+			let Tcarpetas = document.getElementById('PanelCarpetas');
+
+			for(carpeta in Rebeca.folder){
+				listCarpetas += '<a class="panel-block" id="capeta_'+origen+carpeta+'" onclick="mostrar_archivos(\''+Rebeca.folder[carpeta].url+'\', \''+origen+carpeta+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.folder[carpeta].name + ' <div id="sub'+origen+carpeta+'"></div> </a>';
+			}
+
+			Tcarpetas.innerHTML = listCarpetas;
+
+		}
+      
+    	load_main();
+	</script>
 </body>
 </html>
