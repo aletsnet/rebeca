@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700');
+
+// Import the initial variables
+@import "../sass/utilities/_all";
+
+// Colors
+
+$black:        hsl(0, 0%, 4%);
+$black-bis:    hsl(0, 0%, 7%);
+$black-ter:    hsl(0, 0%, 14%);
+
+$grey-darker:  #32353d;
+$grey-dark:    #4b4e58;
+$grey:         #858990;
+$grey-light:   #babdc3;
+$grey-lighter: #e9ebef;
+
+$white-ter:    hsl(0, 0%, 96%);
+$white-bis:    hsl(0, 0%, 98%);
+$white:        hsl(0, 0%, 100%);
+
+$orange:       #fdcb76;
+$yellow:       #f5de60;
+$green:        #89cd60;
+$turquoise:    #00b7a8;
+$cyan:         #6cbae7;
+$blue:         #427fda;
+$purple:       #8550c0;
+$red:          #ff3860;
+
+// Typography
+
+$family-sans-serif: "Work Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-monospace: monospace;
+$render-mode: optimizeLegibility;
+
+$body-size: 15px;
+
+$size-1: 2.5rem;
+$size-2: 2rem;
+$size-3: 1.75rem;
+$size-4: 1.5rem;
+$size-5: 1.25rem;
+$size-6: 1rem;
+$size-7: 0.75rem;
+
+h1 { font-size: $size-1!important;}
+h2 { font-size: $size-2!important;}
+h3 { font-size: $size-3!important;}
+h4 { font-size: $size-4!important;}
+h5 { font-size: $size-5!important;}
+h6 { font-size: $size-6!important;}
+
+$weight-light: 300;
+$weight-normal: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+
+// Responsiveness
+
+// The container horizontal gap, which acts as the offset for breakpoints
+$gap: 64px;
+// 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
+$tablet: 769px;
+// 960px container + 4rem
+$desktop: 960px + (2 * $gap);
+// 1152px container + 4rem
+$widescreen: 1152px + (2 * $gap);
+$widescreen-enabled: true;
+// 1344px container + 4rem
+$fullhd: 1344px + (2 * $gap);
+$fullhd-enabled: true;
+
+// Miscellaneous
+
+$easing: ease-out;
+$radius-small: 2px;
+$radius: 8px;
+$radius-large: 12px;
+$speed: 86ms;
+
+// Flags
+
+$variable-columns: true;
+
+$primary: $purple;
+
+$info: $cyan;
+$success: $green;
+$warning: $yellow;
+$danger: $red;
+
+$light: $white-ter;
+$dark: $grey-darker;
+
+// Invert colors
+
+$orange-invert: findColorInvert($orange);
+$yellow-invert: findColorInvert($yellow);
+$green-invert: findColorInvert($green);
+$turquoise-invert: findColorInvert($turquoise);
+$cyan-invert: findColorInvert($cyan);
+$blue-invert: findColorInvert($blue);
+$purple-invert: findColorInvert($purple);
+$red-invert: findColorInvert($red);
+
+$primary-invert: $turquoise-invert;
+$info-invert: $cyan-invert;
+$success-invert: $green-invert;
+$warning-invert: $yellow-invert;
+$danger-invert: $red-invert;
+$light-invert: $dark;
+$dark-invert: $light;
+
+// General colors
+
+$background: $white-ter;
+$body-background-color: lighten($primary, 46);
+$border: $grey-lighter;
+$border-hover: $grey-light;
+
+// Text colors
+
+$text: $grey-dark;
+$text-invert: findColorInvert($text);
+$text-light: $grey;
+$text-strong: $grey-darker;
+
+$subtitle-color: darken($primary, 10);
+
+// Code colors
+
+$code: $red;
+$code-background: $background;
+
+$pre: $text;
+$pre-background: $background;
+
+// Link colors
+
+$link: $blue;
+$link-hover: lighten($link, 5);
+$link-focus: darken($link, 10);
+$link-active: darken($link, 10);
+$link-invert: $blue-invert;
+$link-visited: darken($link, 20);
+
+$link-hover: $grey-darker;
+$link-hover-border: $grey-light;
+
+$link-focus: $grey-darker;
+$link-focus-border: $blue;
+
+$link-active: $grey-darker;
+$link-active-border: $grey-dark;
+
+// Typography
+
+$family-primary: $family-sans-serif;
+$family-code: $family-monospace;
+
+$size-small: $size-7;
+$size-normal: $size-6;
+$size-medium: $size-5;
+$size-large: $size-4;
+
+// Lists and maps
+$custom-colors: null;
+$custom-shades: null;
+
+$colors: mergeColorMaps(("white": ($white, $black), "black": ($black, $white), "light": ($light, $light-invert), "dark": ($dark, $dark-invert), "primary": ($primary, $primary-invert), "link": ($link, $link-invert), "info": ($info, $info-invert), "success": ($success, $success-invert), "warning": ($warning, $warning-invert), "danger": ($danger, $danger-invert)), $custom-colors);
+$shades: mergeColorMaps(("black-bis": $black-bis, "black-ter": $black-ter, "grey-darker": $grey-darker, "grey-dark": $grey-dark, "grey": $grey, "grey-light": $grey-light, "grey-lighter": $grey-lighter, "white-ter": $white-ter, "white-bis": $white-bis), $custom-shades);
+
+$sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7;
+
+//Buttons
+
+.button {
+  transition: all 300ms ease;
+  border-style: solid;
+  font-size: 0.85rem;
+  font-weight: bold;
+  height: auto!important;
+  
+  &.is-inverted:hover {
+  	color: $white!important;
+  }
+  
+  &.is-active,
+  &.is-focused,
+  &:active,
+  &:focus {
+    box-shadow: none;
+  }
+  @each $name, $pair in $colors {
+    $color: nth($pair, 1);
+    $color-invert: nth($pair, 2);
+
+    &.is-#{$name} {
+      border-color: darken($color, 4)!important;
+
+      &.is-hovered,
+      &:hover {
+        background-color: lighten($color, 6) !important;
+		border-color: darken($color, 6)!important;
+      }
+
+      &.is-active,
+      &.is-focused,
+      &:active,
+      &:focus {
+        border-color: darken($color, 10);
+      }
+    }
+  }
+}
+
+$button-padding-vertical: .75rem;
+$button-padding-horizontal: 1.25rem;
+
+$button-border-color: $grey-lighter;
+$button-border-width: 1px;
+$button-color: $grey-dark;
+
+$button-hover-color: $primary;
+$button-hover-border-color: darken($grey-lighter, 10);
+
+$button-focus-color: darken($primary, 100);
+$button-focus-border-color: darken($primary, 5);
+$button-focus-box-shadow-size: 0 0 0 0.125em;
+$button-focus-box-shadow-color: rgba($primary, 0.25);
+
+$button-active-color: darken($primary, 10);
+$button-active-border-color: darken($primary, 10);
+
+//Navbars
+
+$navbar-background-color: $primary;
+$navbar-item-color: $grey-darker;
+$navbar-item-hover-color: $navbar-item-color;
+$navbar-item-active-color: $navbar-item-color;
+$navbar-item-hover-background-color: rgba(#000, 0.2);
+$navbar-item-active-background-color: rgba(#000, 0.2);
+$navbar-dropdown-item-active-color: $primary;
+$navbar-dropdown-arrow: $navbar-item-color;
+
+// Import the rest of Bulma
+@import "../bulma";
