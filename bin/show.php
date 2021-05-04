@@ -29,7 +29,7 @@ if(is_dir($localrute)){
         $arr['files'] = $newfiles;
         asort($folder);
         $newfolder = [];
-        foreach($file as $i => $value){ $newfolder[] = $value; }
+        foreach($folder as $i => $value){ $newfolder[] = $value; }
         $arr['folder'] = $newfolder;
     }
 }else{

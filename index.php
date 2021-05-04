@@ -41,10 +41,25 @@
 			<div class="modal-card">
 				<header class="modal-card-head">
 				<p class="modal-card-title">Repositorio</p>
-					<button class="delete" aria-label="close"></button>
+					<button class="delete" onclick="closeModal('modalArchivo')"></button>
 				</header>
 				<section class="modal-card-body">
 				<img src="image/load.gif" /> Cargando ...
+				</section>
+				<footer class="modal-card-foot">
+					
+				</footer>
+			</div>
+		</div>
+		<div id="modalArchivo" class="modal">
+			<div class="modal-background"></div>
+			<div class="modal-card">
+				<header class="modal-card-head">
+				<p class="modal-card-title">Repositorio</p>
+					<button class="delete" onclick="closeModal('modalArchivo')"></button>
+				</header>
+				<section class="modal-card-body">
+					<iframe id="frameArchivo" src="image/load.gif" width="100%" height="600px" title="Repositorio"></iframe>
 				</section>
 				<footer class="modal-card-foot">
 					
@@ -82,11 +97,24 @@
 				if(Rebeca.files[archivo].isdir){
 					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
 				}else{
-					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
+					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" onclick="mostrar_archivo(\''+Rebeca.files[archivo].url+'\')"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
 				}
 			}
 
 			panelArchivos.innerHTML = listaArchivos;
+		}
+
+		const mostrar_archivo = (archivo = "") => { 
+			let modalArchivos = document.getElementById('modalArchivo');
+			let frameArchivo = document.getElementById('frameArchivo');
+			modalArchivos.className = "modal is-active";
+			frameArchivo.src = archivo;
+			//console.log(frameArchivo);
+		}
+
+		const closeModal = (namemodal = "") => { 
+			let modalFrame = document.getElementById(namemodal);
+			modalFrame.className = "modal";
 		}
 
 		const load_main = async (origen = "") => {
@@ -107,7 +135,7 @@
 				if(Rebeca.files[archivo].isdir){
 					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
 				}else{
-					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
+					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" onclick="mostrar_archivo(\''+Rebeca.files[archivo].url+'\')"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
 				}
 			}
 
