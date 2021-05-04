@@ -13,8 +13,9 @@ if(is_dir($localrute)){
         //asort($file);
         while(($archivo = readdir($dir)) !== false){
             if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess'){
-                $file[] = ["name" => $archivo, "url" => $localrute."/".$archivo];
-                if(is_dir($localrute."/".$archivo)){
+                $isdir = is_dir($localrute."/".$archivo);
+                $file[] = ["name" => $archivo, "url" => $base."/".$archivo, "isdir" => $isdir];
+                if($isdir){
                     $folder[] = ["name" => $archivo, "url" => $base."/".$archivo];
                 }
             }

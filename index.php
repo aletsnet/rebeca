@@ -26,7 +26,7 @@
 				</div>
 				<div class="column is-two-third">
 					<nav id="PanelArchivos" class="panel">
-						<p class="panel-heading">Archivos</p>
+						<p class="panel-heading">Archivos</p> <label id="dirname"></label>
 						<a class="panel-block ">
 							<span class="panel-icon"><i class="fa fa-cube"></i></span> No hay elementos que mostrar
 						</a>
@@ -36,7 +36,7 @@
 			<hr>
 			</div>
 		</section>
-		<div id="modal" class="modal is-active">
+		<div id="modal" class="modal">
 			<div class="modal-background"></div>
 			<div class="modal-card">
 				<header class="modal-card-head">
@@ -73,8 +73,20 @@
 
 		const mostrar_archivos = async (carpeta = "", destino = "") => {
 			let Rebeca = await load_api(carpeta);
-			console.log(carpeta);
-			console.log(Rebeca);
+			let origen = carpeta.replace("/", "_");
+			let panelArchivos = document.getElementById('PanelArchivos');
+			let capetaactual = document.getElementById('capeta_' + destino);
+			let listaArchivos = '<p class="panel-heading">'+carpeta+'<span></p>';
+			
+			for(archivo in Rebeca.files){
+				if(Rebeca.files[archivo].isdir){
+					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
+				}else{
+					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
+				}
+			}
+
+			panelArchivos.innerHTML = listaArchivos;
 		}
 
 		const load_main = async (origen = "") => {
@@ -82,11 +94,24 @@
 			let listCarpetas = '<p class="panel-heading">Carpetas</p>';
 			let Tcarpetas = document.getElementById('PanelCarpetas');
 
+			let panelArchivos = document.getElementById('PanelArchivos');
+			let listaArchivos = '<p class="panel-heading">Files<span></p>';
+
 			for(carpeta in Rebeca.folder){
-				listCarpetas += '<a class="panel-block" id="capeta_'+origen+carpeta+'" onclick="mostrar_archivos(\''+Rebeca.folder[carpeta].url+'\', \''+origen+carpeta+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.folder[carpeta].name + ' <div id="sub'+origen+carpeta+'"></div> </a>';
+				listCarpetas += '<a class="panel-block" id="capeta_'+origen+carpeta+'" onclick="mostrar_archivos(\''+Rebeca.folder[carpeta].url+'\', \''+origen+carpeta+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.folder[carpeta].name + ' <div class="subcarpetas" id="sub'+origen+carpeta+'"></div> </a>';
 			}
 
 			Tcarpetas.innerHTML = listCarpetas;
+
+			for(archivo in Rebeca.files){
+				if(Rebeca.files[archivo].isdir){
+					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
+				}else{
+					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
+				}
+			}
+
+			panelArchivos.innerHTML = listaArchivos;
 
 		}
       
