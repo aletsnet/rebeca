@@ -12,8 +12,8 @@
 <body>
 	<div class="container">
 		<section class="hero">
-			<h3 class="title">Respositorio</h3>
-			<h4 class="subtitle">Herramienta de publicacion de archivos</h4>
+			<h3 class="title">Índice Temático</h3>
+			<h4 class="subtitle"></h4>
 			<hr>
 			<div class="columns">
 				<div class="column is-one-third">
@@ -89,9 +89,10 @@
 		const mostrar_archivos = async (carpeta = "", destino = "") => {
 			let Rebeca = await load_api(carpeta);
 			let origen = carpeta.replace("/", "_");
+			let lcarpeta = carpeta.replace("files",'<a id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\'\', \'\')"><span class="panel-icon"><i class="fa fa-home"></i></span></a>');
 			let panelArchivos = document.getElementById('PanelArchivos');
 			let capetaactual = document.getElementById('capeta_' + destino);
-			let listaArchivos = '<p class="panel-heading">'+carpeta+'<span></p>';
+			let listaArchivos = '<p class="panel-heading">'+lcarpeta+'<span></p>';
 			
 			for(archivo in Rebeca.files){
 				if(Rebeca.files[archivo].isdir){
