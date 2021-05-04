@@ -57,7 +57,7 @@
 			return await new Promise((resolve, reject) => {
 				let divmodal = document.getElementById('modal');
 				divmodal.className = "modal is-active";
-				const config = {url: '/show.php', method: 'post', data: {dir: directorio }, baseURL: 'bin/', headers: {'Content-Type': 'application/json','X-Requested-With': 'XMLHttpRequest'}};
+				const config = {url: '/show.php', method: 'post', data: {dir: directorio }, baseURL: 'bin/', headers: {'Content-Type': 'application/json','X-Requested-With': 'XMLHttpRequest', "Access-Control-Allow-Origin" : "*"}};
 				axios
 				.request(config)
 				.then(function(response) {

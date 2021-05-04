@@ -1,4 +1,6 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+
 $data = json_decode(file_get_contents("php://input"), true);
 $base = "files";
 $ruta = $data["dir"];
@@ -21,10 +23,14 @@ if(is_dir($localrute)){
             }
         }
         closedir($dir);
-        //asort($file);
-        $arr['files'] = $file;
-        //asort($folder);
-        $arr['folder'] = $folder;
+        asort($file);
+        $newfiles = [];
+        foreach($file as $i => $value){ $newfiles[] = $value; }
+        $arr['files'] = $newfiles;
+        asort($folder);
+        $newfolder = [];
+        foreach($file as $i => $value){ $newfolder[] = $value; }
+        $arr['folder'] = $newfolder;
     }
 }else{
     $arr['dir'] = false;
