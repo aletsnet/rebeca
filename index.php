@@ -95,7 +95,7 @@
 				if(Rebeca.files[archivo].isdir){
 					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
 				}else{
-					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" onclick="mostrar_archivo(\''+Rebeca.files[archivo].url+'\')"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
+					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
 				}
 			}
 
@@ -133,7 +133,7 @@
 				if(Rebeca.files[archivo].isdir){
 					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
 				}else{
-					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" onclick="mostrar_archivo(\''+Rebeca.files[archivo].url+'\')"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
+					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
 				}
 			}
 
