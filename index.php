@@ -12,9 +12,6 @@
 <body>
 	<div class="container">
 		<section class="hero">
-			<h3 class="title">Índice Temático</h3>
-			<h4 class="subtitle"></h4>
-			<hr>
 			<div class="columns">
 				<div class="column is-one-third">
 					<nav id="PanelCarpetas" class="panel">

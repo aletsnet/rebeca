@@ -15,10 +15,12 @@ if(is_dir($localrute)){
         //asort($file);
         while(($archivo = readdir($dir)) !== false){
             if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess'){
+                $url_desglose = explode(" ", $archivo);
+                $indice = str_replace(".","",$url_desglose[0]);
                 $isdir = is_dir($localrute."/".$archivo);
-                $file[] = ["name" => $archivo, "url" => $base."/".$archivo, "isdir" => $isdir];
+                $file[] = ["indice" => $indice, "name" => $archivo, "url" => $base."/".$archivo, "isdir" => $isdir];
                 if($isdir){
-                    $folder[] = ["name" => $archivo, "url" => $base."/".$archivo];
+                    $folder[] = ["indice" => $indice, "name" => $archivo, "url" => $base."/".$archivo];
                 }
             }
         }
