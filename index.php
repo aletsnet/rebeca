@@ -65,7 +65,7 @@
 		</div>
 	</div><!--.container-->
 	<script>
-		let search = "";
+		let search_file = "";
 		let dir_show = "";
 		let searching = false;
 		const load_api = async (directorio) => {
@@ -90,7 +90,7 @@
 			return await new Promise((resolve, reject) => {
 				let divmodal = document.getElementById('modal');
 				//divmodal.className = "modal is-active";
-				const config = {url: '/search.php', method: 'post', data: {dir: dir_show, buscar: search }, baseURL: 'bin/', headers: {'Content-Type': 'application/json','X-Requested-With': 'XMLHttpRequest', "Access-Control-Allow-Origin" : "*"}};
+				const config = {url: '/search.php', method: 'post', data: {dir: dir_show, buscar: search_file }, baseURL: 'bin/', headers: {'Content-Type': 'application/json','X-Requested-With': 'XMLHttpRequest', "Access-Control-Allow-Origin" : "*"}};
 				axios
 				.request(config)
 				.then(function(response) {
@@ -107,7 +107,8 @@
 		const buscar_archivos = async (element) => {
 			if(!searching){
 				searching = true;
-				let Rebeca = await load_search(carpeta);
+				search_file = element.value
+				let Rebeca = await load_search();
 
 				console.log(Rebeca);
 				searching = false;
@@ -151,7 +152,7 @@
 		const load_main = async (origen = "") => {
 			let Rebeca = await load_api(origen);
 			let listCarpetas = '<p class="panel-heading">Carpetas</p>';
-			listCarpetas += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search+'" onkeypress="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
+			//listCarpetas += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search+'" onkeypress="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
 			let Tcarpetas = document.getElementById('PanelCarpetas');
 
 			let panelArchivos = document.getElementById('PanelArchivos');
@@ -162,6 +163,8 @@
 			}
 
 			Tcarpetas.innerHTML = listCarpetas;
+
+			listaArchivos += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search_file+'" onkeyup="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
 
 			for(archivo in Rebeca.files){
 				if(Rebeca.files[archivo].isdir){
