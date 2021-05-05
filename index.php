@@ -13,7 +13,7 @@
 	<div class="container">
 		<section class="hero">
 			<div class="columns">
-				<div class="column is-one-third">
+				<div class="column is-hidden-mobile is-one-third">
 					<nav id="PanelCarpetas" class="panel">
 						<p class="panel-heading">Carpetas</p>
 						<a class="panel-block is-active">
@@ -22,9 +22,9 @@
 					</nav>
 				</div>
 				<div class="column is-two-third">
-					<nav id="PanelArchivos" class="panel">
-						<p class="panel-heading">Archivos</p> <label id="dirname"></label>
-						<a class="panel-block ">
+						<nav id="PanelArchivos" class="panel">
+							<p class="panel-heading">Archivos</p> <label id="dirname"></label>
+							<a class="panel-block ">
 							<span class="panel-icon"><i class="fa fa-cube"></i></span> No hay elementos que mostrar
 						</a>
 					</nav>
@@ -65,6 +65,9 @@
 		</div>
 	</div><!--.container-->
 	<script>
+		let search = "";
+		let dir_show = "";
+		let searching = false;
 		const load_api = async (directorio) => {
 			return await new Promise((resolve, reject) => {
 				let divmodal = document.getElementById('modal');
@@ -83,6 +86,34 @@
 			});
 		}
 
+		const load_search = async () => {
+			return await new Promise((resolve, reject) => {
+				let divmodal = document.getElementById('modal');
+				//divmodal.className = "modal is-active";
+				const config = {url: '/search.php', method: 'post', data: {dir: dir_show, buscar: search }, baseURL: 'bin/', headers: {'Content-Type': 'application/json','X-Requested-With': 'XMLHttpRequest', "Access-Control-Allow-Origin" : "*"}};
+				axios
+				.request(config)
+				.then(function(response) {
+					resolve(response.data);
+					//divmodal.className = "modal";
+				})
+				.catch(function(error) {
+					reject(error);
+					//divmodal.className = "modal";
+				})
+			});
+		}
+
+		const buscar_archivos = async (element) => {
+			if(!searching){
+				searching = true;
+				let Rebeca = await load_search(carpeta);
+
+				console.log(Rebeca);
+				searching = false;
+			}
+		}
+
 		const mostrar_archivos = async (carpeta = "", destino = "") => {
 			let Rebeca = await load_api(carpeta);
 			let origen = carpeta.replace("/", "_");
@@ -98,6 +129,8 @@
 					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+carpeta+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
 				}
 			}
+
+			dir_show = carpeta;
 
 			panelArchivos.innerHTML = listaArchivos;
 		}
@@ -118,10 +151,11 @@
 		const load_main = async (origen = "") => {
 			let Rebeca = await load_api(origen);
 			let listCarpetas = '<p class="panel-heading">Carpetas</p>';
+			listCarpetas += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search+'" onkeypress="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
 			let Tcarpetas = document.getElementById('PanelCarpetas');
 
 			let panelArchivos = document.getElementById('PanelArchivos');
-			let listaArchivos = '<p class="panel-heading">Files<span></p>';
+			let listaArchivos = '<p class="panel-heading"><a><span class="panel-icon"><i class="fa fa-home"></i></span></a><span></p>';
 
 			for(carpeta in Rebeca.folder){
 				listCarpetas += '<a class="panel-block" id="capeta_'+origen+carpeta+'" onclick="mostrar_archivos(\''+Rebeca.folder[carpeta].url+'\', \''+origen+carpeta+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.folder[carpeta].name + ' <div class="subcarpetas" id="sub'+origen+carpeta+'"></div> </a>';
