@@ -49,7 +49,8 @@ if(is_dir($localrute)){
         asort($folder);
         $newfolder = [];
         foreach($folder as $i => $value){ $newfolder[] = $value; }
-        $arr['folder'] = $list_foler;
+        $arr['folder'] = $newfolder;
+        $arr['result'] = $list_foler;
     }
 }else{
     $arr['dir'] = false;
