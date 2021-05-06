@@ -156,7 +156,7 @@
 
 			panelArchivos.innerHTML = listaArchivos;
 
-			console.log(Rebeca.result);
+			//console.log(Rebeca.result);
 		}
 
 		const mostrar_archivo = (archivo = "") => { 

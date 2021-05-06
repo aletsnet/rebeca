@@ -25,7 +25,7 @@ function mostrar($carpeta){
 $data = json_decode(file_get_contents("php://input"), true);
 $base = "files";
 $ruta = $data["dir"];
-$buscar = $data["buscar"];
+$buscar = trim($data["buscar"]);
 $base = ($ruta != "" ? $ruta : $base);
 $localrute =  "../" . $base;
 
@@ -34,13 +34,19 @@ $arr = ["ruta" => $base, "buscar" => $buscar];
 $files = scandir($localrute); //shell_exec('find ' . $localrute . ' -name ' . $buscar);
 $resultado_busqueda = [];
 $list = [];
-foreach($files as $i => $file){
-    if($file != '.' && $archivo != '..' && $archivo != '.htaccess'){
-        $dir = $file;
-        if(strpos($file,$buscar)){
-            $resultado_busqueda[$i] = $file;
+if($buscar != ""){
+    foreach($files as $i => $file){
+        if($file != '.' && $file != '..' && $file != '.htaccess'){
+            $dir = $file;
+            if(strpos($file,strtolower($buscar))){
+                $resultado_busqueda[$i] = $file;
+            }else{
+                if(strpos($file,strtoupper($buscar))){
+                    $resultado_busqueda[$i] = $file;
+                }
+            }
+            $list[] = strpos($file,$buscar) ."|". $file ."|". $buscar;
         }
-        $list[] = strpos($file,$buscar) ."|". $file ."|". $buscar;
     }
 }
 
