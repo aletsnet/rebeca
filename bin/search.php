@@ -1,5 +1,8 @@
 <?php
 header('Access-Control-Allow-Origin: *');
+include('pdf2text.php');
+use Asika\Pdf2text;
+
 
 function mostrar_carpeta($carpeta){
     $list = [];
@@ -46,6 +49,11 @@ $buscar = trim($data["buscar"]);
 $base = ($ruta != "" ? $ruta : $base);
 $localrute =  "../" . $base;
 
+$acentos = array("Ñ","á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
+$noacentos = array("N","a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
+$buscar = strtoupper(str_replace($acentos, $noacentos, $buscar));
+
+
 $arr = ["ruta" => $base];
 if(is_dir($localrute)){
     $arr['dir'] = true;
@@ -57,21 +65,41 @@ if(is_dir($localrute)){
         foreach($files as $i => $file){
             if($file != '.' && $file != '..' && $file != '.htaccess'){
                 $dir = $file;
-                if(strpos(strtolower($file['name']),strtolower($buscar))){
+                if(strpos(strtoupper(str_replace($acentos, $noacentos, $file['name'])),$buscar)){
                     $resultado_busqueda[$i] = $file;
-                }else{
-                    if(strpos(strtoupper($file['name']),strtoupper($buscar))){
-                        $resultado_busqueda[$i] = $file;
-                    }
                 }
                 
             }
         }
     }
+    
+    $reader = new \Asika\Pdf2text;
+    
+    if($buscar!=""){
+        foreach($files as $i => $file){
+            if($file != '.' && $file != '..' && $file != '.htaccess'){
+                $dir = is_dir($file);
+                if(!$dir){
+                    if(strpos(".pdf",$dir)){
+                        $output = $reader->decode($dir);
+                        $output = str_replace($acentos, $noacentos, $output);
+                        if(strpos(strtoupper($output), $buscar)){
+                            $resultado_busqueda[$i] = $dir;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     //$resultado_busqueda
     asort($resultado_busqueda);
     $newfolder = [];
     foreach($resultado_busqueda as $i => $value){ $newfolder[] = $value; }
+
+    //
+    //$output = $reader->decode($fileName);
 
     $arr["files"] = $folders;
     $arr["folder"] = $newfolder;

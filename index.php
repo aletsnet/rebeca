@@ -15,7 +15,8 @@
 			<div class="field">
 				<p class="control has-icons-left">
 					<input class="input" type="text" placeholder="Buscar" onkeyup="buscar_archivos(this);" />
-					<span class="icon is-small is-left"><i class="fa fa-search"></i></span>
+					<span class="icon is-small is-left "><i class="fa fa-search"></i></span>
+					<i id="btn-loading" class="button is-loading" style="display: none;"></i>
 				</p>
 			</div>
 			<div class="columns">
@@ -94,18 +95,18 @@
 
 		const load_search = async () => {
 			return await new Promise((resolve, reject) => {
-				let divmodal = document.getElementById('modal');
-				//divmodal.className = "modal is-active";
+				let divloading = document.getElementById('btn-loading');
+				divloading.style = "display: normal;";
 				const config = {url: '/search.php', method: 'post', data: {dir: "", buscar: search_file }, baseURL: 'bin/', headers: {'Content-Type': 'application/json','X-Requested-With': 'XMLHttpRequest', "Access-Control-Allow-Origin" : "*"}};
 				axios
 				.request(config)
 				.then(function(response) {
 					resolve(response.data);
-					//divmodal.className = "modal";
+					divloading.style = "display: none;";
 				})
 				.catch(function(error) {
 					reject(error);
-					//divmodal.className = "modal";
+					divloading.style = "display: none;";
 				})
 			});
 		}
@@ -127,12 +128,8 @@
 						listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+archivo+'" href="'+Rebeca.folder[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.folder[archivo].name + ' </a>';
 					}
 				}
-
 				dir_show = carpeta;
-
 				panelArchivos.innerHTML = listaArchivos;
-
-				console.log(Rebeca);
 				searching = false;
 			}
 		}
