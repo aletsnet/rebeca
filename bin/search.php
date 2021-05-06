@@ -1,24 +1,41 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 
-function mostrar($carpeta){
+function mostrar_carpeta($carpeta){
     $list = [];
-    $files = scandir($localrute);
+    $files = scandir($carpeta);
     foreach($files as $i => $file){
-        if($file != '.' && $archivo != '..' && $archivo != '.htaccess'){
-            $dir = $file;
-            //$resultado_busqueda[$i] = $file;
+        if($file != '.' && $file != '..' && $file != '.htaccess'){
+            $name = explode(" ", $file);
+            $router = $carpeta . "/".$file;
             $subcarpeta = [];
-            if(is_dir($localrute . "/".$dir)){
-                $subcarpeta = scandir($localrute . "/".$dir);
-                foreach($files as $i => $file){
-    
-                }
+            $esfolder = is_dir($router);
+            if($esfolder){
+                $lista = mostrar_subcarpeta($router);
+                $list = array_merge($list, $lista);
             }
-            $resultado_busqueda[$i] = $file;
+            $list[] = ["id" => $name[0],"name" => $file, "url" => $router, 'isdir' => $esfolder];
         }
     }
-    
+    return $list;
+}
+
+function mostrar_subcarpeta($carpeta){
+    $list = [];
+    $files = scandir($carpeta);
+    foreach($files as $i => $file){
+        if($file != '.' && $file != '..' && $file != '.htaccess'){
+            $name = explode(" ", $file);
+            $router = $carpeta . "/".$file;
+            $subcarpeta = [];
+            $esfolder = is_dir($router);
+            if($esfolder){
+                $lista = mostrar_carpeta($router);
+                $list = array_merge($list, $lista);
+            }
+            $list[] = ["id" => $name[0],"name" => $file, "url" => $router, 'isdir' => $esfolder];
+        }
+    }
     return $list;
 }
 
@@ -29,27 +46,37 @@ $buscar = trim($data["buscar"]);
 $base = ($ruta != "" ? $ruta : $base);
 $localrute =  "../" . $base;
 
-$arr = ["ruta" => $base, "buscar" => $buscar];
-
-$files = scandir($localrute); //shell_exec('find ' . $localrute . ' -name ' . $buscar);
-$resultado_busqueda = [];
-$list = [];
-if($buscar != ""){
-    foreach($files as $i => $file){
-        if($file != '.' && $file != '..' && $file != '.htaccess'){
-            $dir = $file;
-            if(strpos($file,strtolower($buscar))){
-                $resultado_busqueda[$i] = $file;
-            }else{
-                if(strpos($file,strtoupper($buscar))){
+$arr = ["ruta" => $base];
+if(is_dir($localrute)){
+    $arr['dir'] = true;
+    $folders = scandir($localrute); //shell_exec('find ' . $localrute . ' -name ' . $buscar);
+    $resultado_busqueda = [];
+    $list = [];
+    $files = mostrar_carpeta($localrute);
+    if($buscar!=""){
+        foreach($files as $i => $file){
+            if($file != '.' && $file != '..' && $file != '.htaccess'){
+                $dir = $file;
+                if(strpos(strtolower($file['name']),strtolower($buscar))){
                     $resultado_busqueda[$i] = $file;
+                }else{
+                    if(strpos(strtoupper($file['name']),strtoupper($buscar))){
+                        $resultado_busqueda[$i] = $file;
+                    }
                 }
+                
             }
-            $list[] = strpos($file,$buscar) ."|". $file ."|". $buscar;
         }
     }
-}
+    //$resultado_busqueda
+    asort($resultado_busqueda);
+    $newfolder = [];
+    foreach($resultado_busqueda as $i => $value){ $newfolder[] = $value; }
 
-$arr["files"] = $list;
-$arr["resultado"] = $resultado_busqueda;
+    $arr["files"] = $folders;
+    $arr["folder"] = $newfolder;
+    $arr["result"] = $resultado_busqueda;
+}else{
+    $arr['dir'] = false;
+}
 print_r(json_encode($arr));
