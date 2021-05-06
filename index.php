@@ -107,7 +107,7 @@
 		const buscar_archivos = async (element) => {
 			if(!searching){
 				searching = true;
-				search_file = element.value
+				search_file = element.value;
 				let Rebeca = await load_search();
 
 				console.log(Rebeca);
@@ -118,11 +118,23 @@
 		const mostrar_archivos = async (carpeta = "", destino = "") => {
 			let Rebeca = await load_api(carpeta);
 			let origen = carpeta.replace("/", "_");
-			let lcarpeta = carpeta.replace("files",'<a id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\'\', \'\')"><span class="panel-icon"><i class="fa fa-home"></i></span></a>');
+			let lcarpeta = ""; //carpeta.replace("files",'<a id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\'\', \'\')"><span class="panel-icon"><i class="fa fa-home"></i></span></a>');
 			let panelArchivos = document.getElementById('PanelArchivos');
 			let capetaactual = document.getElementById('capeta_' + destino);
+			let lista_subcarpetas = carpeta.split("/");
+
+			let lsubcarpeta = "";
+			for(subcarpeta in lista_subcarpetas){
+				lsubcarpeta += (lsubcarpeta!="" ? "/" : "" ) + lista_subcarpetas[subcarpeta];
+				let icon = (lista_subcarpetas[subcarpeta] != "" && lista_subcarpetas[subcarpeta] != "files" ? "fa-folder" : "fa-home");
+				let ldescripcion = (lista_subcarpetas[subcarpeta] != "" && lista_subcarpetas[subcarpeta] != "files" ? lista_subcarpetas[subcarpeta] : "");
+				let link = '<a class="tag is-light " onclick="mostrar_archivos(\''+lsubcarpeta+'\',\'\')"><span class="panel-icon"><i class="fa '+icon+'"></i></span> '+ldescripcion+'</a><span>';
+				lcarpeta += link;
+			}
+
 			let listaArchivos = '<p class="panel-heading">'+lcarpeta+'<span></p>';
-			
+			listaArchivos += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search_file+'" onkeyup="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
+
 			for(archivo in Rebeca.files){
 				if(Rebeca.files[archivo].isdir){
 					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
