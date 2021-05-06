@@ -132,6 +132,15 @@
 				lcarpeta += link;
 			}
 
+			let listCarpetas = '<p class="panel-heading">Carpetas</p>';
+			//listCarpetas += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search+'" onkeypress="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
+			let Tcarpetas = document.getElementById('PanelCarpetas');
+
+			for(carpeta in Rebeca.folder){
+				listCarpetas += '<a class="panel-block" id="capeta_'+origen+carpeta+'" onclick="mostrar_archivos(\''+Rebeca.folder[carpeta].url+'\', \''+origen+carpeta+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.folder[carpeta].name + ' <div class="subcarpetas" id="sub'+origen+carpeta+'"></div> </a>';
+			}
+			Tcarpetas.innerHTML = listCarpetas;
+
 			let listaArchivos = '<p class="panel-heading">'+lcarpeta+'<span></p>';
 			listaArchivos += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search_file+'" onkeyup="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
 
@@ -146,6 +155,8 @@
 			dir_show = carpeta;
 
 			panelArchivos.innerHTML = listaArchivos;
+
+			console.log(Rebeca.result);
 		}
 
 		const mostrar_archivo = (archivo = "") => { 
@@ -169,15 +180,12 @@
 
 			let panelArchivos = document.getElementById('PanelArchivos');
 			let listaArchivos = '<p class="panel-heading"><a><span class="panel-icon"><i class="fa fa-home"></i></span></a><span></p>';
-
 			for(carpeta in Rebeca.folder){
 				listCarpetas += '<a class="panel-block" id="capeta_'+origen+carpeta+'" onclick="mostrar_archivos(\''+Rebeca.folder[carpeta].url+'\', \''+origen+carpeta+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.folder[carpeta].name + ' <div class="subcarpetas" id="sub'+origen+carpeta+'"></div> </a>';
 			}
-
 			Tcarpetas.innerHTML = listCarpetas;
 
 			listaArchivos += '<div class="panel-block"><p class="control has-icons-left"><input class="input is-small" type="text" placeholder="search" value="'+search_file+'" onkeyup="buscar_archivos(this);"><span class="icon is-small is-left"><i class="fas fa-search" aria-hidden="true"></i></span></p></div>';
-
 			for(archivo in Rebeca.files){
 				if(Rebeca.files[archivo].isdir){
 					listaArchivos += '<a class="panel-block" id="archivo_'+origen+archivo+'" onclick="mostrar_archivos(\''+Rebeca.files[archivo].url+'\', \''+origen+archivo+'\')"><span class="panel-icon"><i class="fa fa-folder"></i></span>' + Rebeca.files[archivo].name + ' <div class="subcarpetas" id="sub'+origen+archivo+'"></div> </a>';
@@ -185,7 +193,6 @@
 					listaArchivos += '<a class="panel-block" target="_blank" id="file_'+origen+archivo+'" href="'+Rebeca.files[archivo].url+'"><span class="panel-icon"><i class="fa fa-file"></i></span>' + Rebeca.files[archivo].name + ' </a>';
 				}
 			}
-
 			panelArchivos.innerHTML = listaArchivos;
 
 		}

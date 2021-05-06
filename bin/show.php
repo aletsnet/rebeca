@@ -3,10 +3,10 @@ header('Access-Control-Allow-Origin: *');
 
 $data = json_decode(file_get_contents("php://input"), true);
 $base = "files";
-$ruta = $data["dir"];
+$ruta = str_replace("../","",$data["dir"]);
 $base = ($ruta != "" ? $ruta : $base);
 $localrute = "../" . $base;
-$arr = ["ruta" => $base];
+$arr = ["ruta" => $ruta];
 if(is_dir($localrute)){
     if($dir = opendir($localrute)){
         $arr['dir'] = true;
@@ -35,20 +35,22 @@ if(is_dir($localrute)){
         $list_foler = [];
         foreach($subcarpetas as $i => $subfoler){
             $router .= ($router!=""?"/":"") . $subfoler;
-            if($subfoler != ".." && $subfoler != "." && $subfoler != "files"){
+            if($subfoler != ".." && $subfoler != "." ){
                 $temp = scandir($router);
                 foreach($temp as $i => $v){
                     if($v != ".." && $v != "." && $v != ".htaccess"){
-                        $temp_name = explode(" ", $v);
-                        $list_foler[] = ["indice" => $temp_name[0], "name" => $v, "url" => $router."/".$v];; 
+                        if(is_dir($router."/".$v)){
+                            $temp_name = explode(" ", $v);
+                            $list_foler[] = ["indice" => (float) $temp_name[0], "name" => $v, "url" => str_replace("../","",($router."/".$v))]; 
+                        }
                     }
                 }
             }
         }
 
-        asort($folder);
+        asort($list_foler);
         $newfolder = [];
-        foreach($folder as $i => $value){ $newfolder[] = $value; }
+        foreach($list_foler as $i => $value){ $newfolder[] = $value; }
         $arr['folder'] = $newfolder;
         $arr['result'] = $list_foler;
     }
