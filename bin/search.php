@@ -14,7 +14,7 @@ function mostrar_carpeta($carpeta){
                 $lista = mostrar_subcarpeta($router);
                 $list = array_merge($list, $lista);
             }
-            $list[] = ["id" => $name[0],"name" => $file, "url" => $router, 'isdir' => $esfolder];
+            $list[] = ["id" => $name[0],"name" => $file, "url" => str_replace("../","",$router), 'isdir' => $esfolder];
         }
     }
     return $list;
@@ -33,7 +33,7 @@ function mostrar_subcarpeta($carpeta){
                 $lista = mostrar_carpeta($router);
                 $list = array_merge($list, $lista);
             }
-            $list[] = ["id" => $name[0],"name" => $file, "url" => $router, 'isdir' => $esfolder];
+            $list[] = ["id" => $name[0],"name" => $file, "url" => str_replace("../","",$router), 'isdir' => $esfolder];
         }
     }
     return $list;
