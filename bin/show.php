@@ -27,7 +27,11 @@ if(is_dir($localrute)){
         closedir($dir);
         asort($file);
         $newfiles = [];
-        foreach($file as $i => $value){ $newfiles[] = $value; }
+        foreach($file as $i => $value){
+            if(!strpos($file['name'],'NORMAS DE USO COMUN')){
+                $newfiles[] = $value; 
+            }
+        }
         $arr['files'] = $newfiles;
 
         $subcarpetas = explode("/",$localrute);
@@ -50,9 +54,14 @@ if(is_dir($localrute)){
 
         asort($list_foler);
         $newfolder = [];
-        foreach($list_foler as $i => $value){ $newfolder[] = $value; }
+        foreach($list_foler as $i => $value){ 
+            if(!strpos($file['name'],'NORMAS DE USO COMUN')){
+                $newfolder[] = $value;
+            }
+        }
         $arr['folder'] = $newfolder;
-        $arr['result'] = $list_foler;
+        $arr['result'] = $newfolder;
+        ;
     }
 }else{
     $arr['dir'] = false;

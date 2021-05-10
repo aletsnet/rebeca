@@ -1,5 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
+include('../vendor/autoload.php');
+use Asika\Pdf2text;
 
 function mostrar_carpeta($carpeta){
     $list = [];
@@ -50,7 +52,6 @@ $acentos = array("Ñ","á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À
 $noacentos = array("N","a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
 $buscar = strtoupper(str_replace($acentos, $noacentos, $buscar));
 
-
 $arr = ["ruta" => $base];
 if(is_dir($localrute)){
     $arr['dir'] = true;
@@ -58,6 +59,7 @@ if(is_dir($localrute)){
     $resultado_busqueda = [];
     $list = [];
     $files = mostrar_carpeta($localrute);
+    /*
     if($buscar!=""){
         foreach($files as $i => $file){
             if($file != '.' && $file != '..' && $file != '.htaccess'){
@@ -68,8 +70,28 @@ if(is_dir($localrute)){
                 
             }
         }
-    }
+    }*/
 
+    $reader = new \Asika\Pdf2text;
+    
+    if($buscar!=""){
+        foreach($files as $i => $file){
+            if($file != '.' && $file != '..' && $file != '.htaccess'){
+                $dir = is_dir("../".$file['url']);
+                if(!$dir){
+                    $resultado_busqueda[] = $file ;
+                    if(strpos($file['name'],".pdf")){
+                        $resultado_busqueda[$i] = $file;
+                        $output = $reader->decode("../".$file['url']);
+                        $output = str_replace($acentos, $noacentos, $output);
+                        if(strpos(strtoupper($output), $buscar)){
+                            $resultado_busqueda[$i] = $file;
+                        }
+                    }
+                }
+            }
+        }
+    }
     //$resultado_busqueda
     asort($resultado_busqueda);
     $newfolder = [];
