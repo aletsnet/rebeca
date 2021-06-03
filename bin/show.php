@@ -28,8 +28,10 @@ if(is_dir($localrute)){
         asort($file);
         $newfiles = [];
         foreach($file as $i => $value){
-            if(!strpos($file['name'],'NORMAS DE USO COMUN')){
-                $newfiles[] = $value; 
+            if(isset($value['name'])){
+                if(!strpos($value['name'],'NORMAS DE USO COMUN')){
+                    $newfiles[] = $value; 
+                }
             }
         }
         $arr['files'] = $newfiles;
@@ -55,7 +57,7 @@ if(is_dir($localrute)){
         asort($list_foler);
         $newfolder = [];
         foreach($list_foler as $i => $value){ 
-            if(!strpos($file['name'],'NORMAS DE USO COMUN')){
+            if(!strpos($value['name'],'NORMAS DE USO COMUN')){
                 $newfolder[] = $value;
             }
         }

@@ -75,7 +75,7 @@
 	<script>
 		let search_file = "";
 		let dir_show = "";
-		let namecolmns = "Índice Temático";
+		let namecolmns = "Legislación por tema";
 		let searching = false;
 		let searchingfile = false;
 
@@ -198,7 +198,7 @@
 				if(lsubcarpeta != ".."){
 					let icon = (lista_subcarpetas[subcarpeta] != "" && lista_subcarpetas[subcarpeta] != "files" ? "fa-folder" : "fa-home");
 					let ldescripcion = (lista_subcarpetas[subcarpeta] != "" && lista_subcarpetas[subcarpeta] != "files" ? lista_subcarpetas[subcarpeta] : "");
-					let link = '<a class="tag is-light " onclick="mostrar_archivos(\''+lsubcarpeta+'\',\'\')"><span class="panel-icon"><i class="fa '+icon+'"></i></span> '+ldescripcion+'</a><span>';
+					let link = '<a class="button is-small" onclick="mostrar_archivos(\''+lsubcarpeta+'\',\'\')"><span class="icon is-small"><i class="fa '+icon+'"></i></span> <span>'+ldescripcion+'</span></a>';
 					lcarpeta += link;
 				}
 			}
@@ -254,7 +254,7 @@
 			let Tcarpetas = document.getElementById('PanelCarpetas');
 
 			let panelArchivos = document.getElementById('PanelArchivos');
-			let listaArchivos = '<p class="panel-heading"><a onclick="mostrar_archivos(\'files\',\'\')"><span class="panel-icon"><i class="fa fa-home"></i></span></a><span></p>';
+			let listaArchivos = '<p class="panel-heading"><a class="button is-small" onclick="mostrar_archivos(\'files\',\'\')"><span class="panel-icon"><i class="fa fa-home"></i></span></a><span></p>';
 			for(carpeta in Rebeca.folder){
 				//alert("|" + Rebeca.folder[carpeta].name+"|");
 				if(Rebeca.folder[carpeta].name != "NORMAS DE USO COMUN"){
